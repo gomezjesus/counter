@@ -12,6 +12,17 @@ class App extends Component {
     ]
   };
 
+  //hay que incluir 'props' como parametro en constructor y en super para poder accesar a el. El this.setState()... no es necesario ya que esto aun no modifica algo que ya esta renderizado en el DOM
+  constructor(props) {
+    super(props);
+    console.log("App - Constructor", this.props);
+  }
+
+  componentDidMount() {
+    //ajax call
+    console.log("App - Mounted");
+  }
+
   handleDelete = counterId => {
     console.log("Event Handler called", counterId);
     const counters = this.state.counters.filter(c => c.id !== counterId);
@@ -34,7 +45,16 @@ class App extends Component {
     counters[index].value++;
     this.setState({ counters });
   };
+  handleDecrement = counter => {
+    const counters = [...this.state.counters];
+    const index = counters.indexOf(counter);
+    counters[index] = { ...counter };
+    counters[index].value--;
+    this.setState({ counters });
+  };
+
   render() {
+    console.log("App - Render");
     return (
       <div>
         <Navbar
@@ -46,6 +66,7 @@ class App extends Component {
             onDelete={this.handleDelete}
             onReset={this.handleReset}
             onIncrement={this.handleIncrement}
+            onDecrement={this.handleDecrement}
           />
         </main>
       </div>
